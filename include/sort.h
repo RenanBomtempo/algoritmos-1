@@ -1,20 +1,11 @@
 //==============================================================================
-//                                MAIN FILE
+//                          SORT ALGORITHM (interface)
 //------------------------------------------------------------------------------
-// DESCRIPTION: This is the main file for the program. It only contains the main
-//              the main function. 
+// DESCRIPTION: Sorting algorithm for the 'perfect matching' project.
 //------------------------------------------------------------------------------
 // AUTHOR: Renan Antunes Braga Bomtempo                    MATRICULA: 2018048524
 //==============================================================================
-#include <stdio.h>
-#include <stdlib.h>
-#include "univ.h"
-#include "cand.h"
-#include "sort.h"
+#ifndef SORT_H
+#define SORT_H
 
-int main(int argc, char const *argv[])
-{
-    //Process file input
-
-    return 0;
-}
+#endif //SORT_H

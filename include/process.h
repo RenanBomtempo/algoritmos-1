@@ -1,8 +1,9 @@
 //==============================================================================
-//                                MAIN FILE
+//                           PROOCESS INPUT FILES
 //------------------------------------------------------------------------------
-// DESCRIPTION: This is the main file for the program. It only contains the main
-//              the main function. 
+// DESCRIPTION: Process all input files and store their data into the program's 
+//              data structure. This includes a check for the input formatting 
+//              validity.
 //------------------------------------------------------------------------------
 // AUTHOR: Renan Antunes Braga Bomtempo                    MATRICULA: 2018048524
 //==============================================================================
@@ -10,11 +11,15 @@
 #include <stdlib.h>
 #include "univ.h"
 #include "cand.h"
-#include "sort.h"
 
-int main(int argc, char const *argv[])
-{
-    //Process file input
 
-    return 0;
-}
+/*
+ * Get candidates from file and store them into an array of type 'cand'
+ */
+cand *getCandidatesFromFile(char const *file_name);
+
+/*
+ * Chech if the desired file was opened correctly
+ */
+void checkFilePointer(FILE *fp, char *file_name);
+
