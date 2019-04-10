@@ -16,7 +16,7 @@
 /*
  * Get candidates from file and store them into an array of type 'cand'
  */
-cand *getCandidatesFromFile(char const *file_name);
+cand *getCandidatesFromFile(char *file_name);
 
 /*
  * Chech if the desired file was opened correctly
