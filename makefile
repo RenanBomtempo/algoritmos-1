@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -I ./include -Wall
 
 # MAKES
-all: main 
+all: main clean
 
 # MAIN FILE
 main: cand.o univ.o process.o
@@ -23,8 +23,5 @@ process.o:
 	$(CC) -c ./src/process.c $(CFLAGS)
 
 # CLEAN OBJECT FILES
-clean_linux:
+clean:
 	rm *.o
-
-clean_windows:
-	Del /S *.o
