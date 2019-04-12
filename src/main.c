@@ -10,11 +10,15 @@
 #include <stdlib.h>
 #include "univ.h"
 #include "cand.h"
-#include "sort.h"
+#include "process.h"
 
 int main(int argc, char const *argv[])
 {
-    //Process file input
+    univ *universities = getUniversitiesFromFile();
+    cand *candidates = getCandidatesFromFile(argv[1], universities);
+    //Store all universities in an array
+    //Store all canddates in an array
+    //Run Gale-Shapley algortihm
 
     return 0;
 }

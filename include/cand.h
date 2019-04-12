@@ -12,36 +12,22 @@
 /*
  * Struct containing all candidate data.
  */
-typedef struct Candidate cand;
+typedef struct Candidate {
+    int num_applications;
+    int score;
+    char is_allocated;
+    univ **priority_list;
+} cand;
 
 /*
- * Allocate memory for a new 'candidate' entity.
+ * Create an array of 'candidate' entity.
  */
-cand *newCandidate(void);
+cand *newCandidateArray(int n);
 
 /*
- * Free memory previously allocated to a 'candidate' entity.
+ * Get the string containing the priority list and convert it into an array of 
+ * universities.
  */
-void clearCandidate(cand *c);
-
-/*
- * GET the number of applications made by the given candidate.
- */
-int getNumApplications(cand c);
-
-/*
- * SET the number of applications made by the given candidate.
- */
-void setNumApplications(cand *c, int num);
-
-/*
- * GET the score of  the given candidate.
- */
-int getScore(cand c);
-
-/*
- * SET the score of  the given candidate.
- */
-void setScore(cand *c, int sc);
+univ **processPriorityList(char *str, univ *universities);
 
 #endif

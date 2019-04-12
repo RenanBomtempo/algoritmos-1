@@ -12,11 +12,15 @@
 #include "univ.h"
 #include "cand.h"
 
+/*
+ * Get universities from file and store them into an array of type 'cand'
+ */
+univ *getUniversitiesFromFile(char *file_name);
 
 /*
  * Get candidates from file and store them into an array of type 'cand'
  */
-cand *getCandidatesFromFile(char *file_name);
+cand *getCandidatesFromFile(char *file_name, univ *universities);
 
 /*
  * Chech if the desired file was opened correctly

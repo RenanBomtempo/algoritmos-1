@@ -12,16 +12,10 @@
 #include "univ.h"
 #include "cand.h"
 
-typedef struct Candidate {
-    int num_applications;
-    int score;
-    univ **priority_list;
-} cand;
-
-cand *newCandidate(void)
+cand *newCandidateArray(int n)
 {
     //Allocate memory
-    cand *ptr = (cand*)malloc(sizeof(cand));
+    cand *ptr = (cand*)malloc(n * sizeof(cand));
 
     //Check memory
     if(ptr == NULL) {
@@ -30,33 +24,33 @@ cand *newCandidate(void)
     }
 
     //Set default values
-    ptr->num_applications = -1;
-    ptr->score = -1;
+    for (int i=0; i<n; i++)
+    {
+        ptr[i].num_applications = -1;
+        ptr[i].score = -1;
+        ptr[i].priority_list = NULL;
+    }
 
     return ptr;
 }
 
-void clearCandidate(cand *c)
+univ **processPriorityList(char *str, univ *universities) 
 {
-    free(c);
+    //read each number between spaces in the string 
+    //get number of universisitesin the priority list
+    int num_univs;
+    int univ_index[num_univs];
+    
+    //create priority list
+    univ **priority_list = (univ**)malloc(num_univs * sizeof(univ*));
+
+    //associate each number with the respective university
+    for (int i=0; i<num_univs; i++)
+    {
+        priority_list[i] = universities + univ_index[i];
+    }
+
+    //return array
+    return priority_list;
 }
 
-int getNumApplications(cand c)
-{
-    return c.num_applications;
-}
-
-void setNumApplications(cand *c, int num)
-{
-    c->num_applications = num;
-}
-
-int getScore(cand c)
-{
-    return c.score;
-}
-
-void setScore(cand *c, int sc)
-{
-    c->score = sc;
-}

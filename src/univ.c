@@ -11,10 +11,7 @@
 #include <stdlib.h>
 #include "univ.h"
 
-typedef struct University {
-    int num_vacancies;
-    int min_score;
-} univ;
+
 
 univ *newUniversity(void)
 {   
