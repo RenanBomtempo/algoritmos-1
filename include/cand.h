@@ -1,5 +1,5 @@
 //==============================================================================
-//                          CANDIDATES ADT (interface)
+//                          CANDIDATES ADT [header]
 //------------------------------------------------------------------------------
 // DESCRIPTION: Header file of the abstract data type used to manipulate the 
 //              CANDIDATES entity in the 'perfect matching' project.
@@ -15,7 +15,7 @@
 typedef struct Candidate {
     int num_applications;
     int score;
-    char is_allocated;
+    univ *allocated_university;
     univ **priority_list;
 } cand;
 
@@ -25,9 +25,14 @@ typedef struct Candidate {
 cand *newCandidateArray(int n);
 
 /*
+ * Get candidates from file and store them into an array of type 'cand'.
+ */
+cand *getCandidatesFromFile(char *file_name, univ *universities);
+
+/*
  * Get the string containing the priority list and convert it into an array of 
  * universities.
  */
 univ **processPriorityList(char *str, univ *universities);
 
-#endif
+#endif //CAND_H
