@@ -9,10 +9,14 @@
 #ifndef CAND_H
 #define CAND_H
 
+//Number of candidates in the read file
+int g_num_candidates; 
+
 /*
  * Struct containing all candidate data.
  */
 typedef struct Candidate {
+    int index;
     int num_applications;
     int score;
     univ *allocated_university;
@@ -27,12 +31,11 @@ cand *newCandidateArray(int n);
 /*
  * Get candidates from file and store them into an array of type 'cand'.
  */
-cand *getCandidatesFromFile(char *file_name, univ *universities);
+cand *getCandidatesFromFile(const char *file_name, univ *universities);
 
 /*
- * Get the string containing the priority list and convert it into an array of 
- * universities.
+ * Free all memory allocated for the candidate array
  */
-univ **processPriorityList(char *str, univ *universities);
+void freeCandidateArray(cand *c, int n);
 
 #endif //CAND_H

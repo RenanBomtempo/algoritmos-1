@@ -27,13 +27,13 @@ int main(int argc, const char *argv[])
     univ *universities = getUniversitiesFromFile(file_name_buffer);
 
     //Array of candidates
-    //file_name_buffer = argv[2];
-    //cand *candidates = getCandidatesFromFile(file_name_buffer, universities);
+    file_name_buffer = argv[2];
+    cand *candidates = getCandidatesFromFile(file_name_buffer, universities);
 
     //Run Gale-Shapley algortihm
 
     //Free all arrays
-    free(universities);
-
+    freeUniversityArray(universities);
+    freeCandidateArray(candidates, g_num_candidates);
     return 0;
 }

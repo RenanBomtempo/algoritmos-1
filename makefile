@@ -6,8 +6,8 @@ CFLAGS = -I ./include -Wall
 all: main clean
 
 # MAIN FILE
-main: cand.o univ.o utilities.o
-	$(CC) ./src/main.c cand.o univ.o utilities.o -o ./bin/main $(CFLAGS)
+main: univ.o cand.o utilities.o
+	$(CC) ./src/main.c univ.o cand.o utilities.o -o ./bin/main $(CFLAGS)
 
 # OBJECT FILES
 cand.o:

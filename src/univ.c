@@ -24,8 +24,12 @@ univ *newUniversityArray(int n)
     }
 
     //Set default values
-    ptr->min_score = -1;
-    ptr->num_vacancies = -1;
+    for (int i=0; i<n; i++)
+    {
+        ptr[i].index = i+1;
+        ptr[i].min_score = -1;
+        ptr[i].num_vacancies = -1;
+    }
 
     return ptr;
 }
@@ -37,30 +41,32 @@ univ *getUniversitiesFromFile(const char *file_name)
     checkFilePointer(fp, file_name);
 
     //Number of universities
-    int num_universities;
-    fscanf(fp, "%d", &num_universities);
+    fscanf(fp, "%d", &g_num_universities);
 
     //University array
-    univ *universities = newUniversityArray(num_universities);
+    univ *universities = newUniversityArray(g_num_universities);
 
     //Populate 'universities' with data
-    for (int i = 0; i < num_universities; i++)
+    for (int i = 0; i < g_num_universities; i++)
     {   
-        fscanf(fp, "%d %d", &universities[i].num_vacancies, &universities[i].min_score);
+        //Read 'num_vacancies' and 'min_score'
+        fscanf(fp, "%d %d", &universities[i].num_vacancies, 
+                            &universities[i].min_score);
     }
 
-    //========================BEGIN-TEST-BLOCK==========================
-    printf("\nThe file \'%s\' contains data from %d universities:\n", 
-           file_name, num_universities);
+    //========================BEGIN-LOG-BLOCK==========================
+    printf("All collected data from %d universities:\n", g_num_universities);
 
-    for (int i = 0; i < num_universities; i++)
+    for (int i = 0; i < g_num_universities; i++)
     {
         printf("    University [%d]:\n"      
                "        vacancies.......%d\n"
                "        minimum score...%d\n", 
-               i, universities[i].num_vacancies, universities[i].min_score);
+               universities[i].index, 
+               universities[i].num_vacancies, 
+               universities[i].min_score);
     }
-    //=========================END-TEST-BLOCK===========================
+    //=========================END-LOG-BLOCK===========================
 
     //Close file
     fclose(fp);
@@ -68,3 +74,11 @@ univ *getUniversitiesFromFile(const char *file_name)
     return universities;
 }
 
+void freeUniversityArray(univ *u)
+{
+    //Free university array
+    free(u);
+
+    printf("University array freed\n");
+
+}
