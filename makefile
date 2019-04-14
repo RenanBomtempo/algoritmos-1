@@ -7,15 +7,15 @@ VALG = -g
 all: main clean
 
 # MAIN FILE
-main: univ.o cand.o util.o
-	$(CC) ./src/main.c   univ.o cand.o util.o stblm.o   -o ./bin/main $(CFLAGS) $(VALG)
+main: col.o cand.o util.o stblm.o
+	$(CC) ./src/main.c   col.o cand.o util.o stblm.o   -o ./bin/main $(CFLAGS) $(VALG)
 
 # OBJECT FILES
 cand.o:
 	$(CC) -c ./src/cand.c $(CFLAGS)
 
-univ.o:
-	$(CC) -c ./src/univ.c $(CFLAGS)
+col.o:
+	$(CC) -c ./src/col.c $(CFLAGS)
 
 sort.o:
 	$(CC) -c ./src/sort.c $(CFLAGS)

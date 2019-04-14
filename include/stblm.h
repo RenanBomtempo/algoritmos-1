@@ -8,13 +8,34 @@
 //==============================================================================
 #ifndef  STBLM_H   
 #define  STBLM_H   
-#include "univ.h"
+#include "col.h"
 #include "cand.h"
 #include "util.h"
 
 /*
  * Execute the Gale-Shapley algorithm for stable matching.
  */
-void runGaleShapley(univ *universities, cand *candidates);
+void runGaleShapley(col *colleges, int num_col, cand *candidates, int num_cand);
+
+/*
+ *
+ */
+int everyoneApplied(cand *candidates, int n);
+
+/*
+ *
+ */
+int *initializeUnallocatedCandidates(int n);
+
+/*
+ *
+ */
+void candidateIsNowAllocated(int *list, int candidate);
+
+/*
+ *
+ */
+void applyToCollege(cand *candidate, col *college);
+
 
 #endif //STBLM_H   

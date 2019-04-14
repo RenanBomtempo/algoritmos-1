@@ -16,11 +16,14 @@ int g_num_candidates;
  * Struct containing all candidate data.
  */
 typedef struct Candidate {
-    int index;
+    //Number of applications made by the candidate.
     int num_applications;
+    //Score of the candidate.
     int score;
-    univ *allocated_university;
-    univ **priority_list;
+    //Index of the college the candidate was allocated to.
+    int allocated_college_index;
+    //List of college indices to which the candidate will apply to.
+    int *priority_list;
 } cand;
 
 /*
@@ -31,10 +34,10 @@ cand *newCandidateArray(int n);
 /*
  * Get candidates from file and store them into an array of type 'cand'.
  */
-cand *getCandidatesFromFile(const char *file_name, univ *universities);
+cand *getCandidatesFromFile(const char *file_name, col *colleges);
 
 /*
- * Free all memory allocated for the candidate array
+ * Free all memmory allocated for the candidate array
  */
 void freeCandidateArray(cand *c, int n);
 

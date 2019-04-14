@@ -10,6 +10,30 @@
 #include <stdlib.h>
 #include "util.h"
 
+void addToList(list *l, cand *c)
+{
+    list *ptr = l;
+    
+    while(ptr->next != NULL) ptr = ptr->next;
+
+    list *new_item = (list*)malloc(sizeof(list));
+
+    new_item->candidate = c;
+    new_item->next = NULL;
+}
+
+
+void removeFromList(list *l, int key)
+{
+
+}
+
+void orderList(list *l)
+{
+
+}
+
+
 void checkFilePointer(FILE *fp, const char *file_name)
 {
     if (fp == NULL) 

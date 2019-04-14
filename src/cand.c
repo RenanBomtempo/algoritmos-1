@@ -9,35 +9,34 @@
 //==============================================================================
 #include <stdio.h>
 #include <stdlib.h>
-#include "univ.h"
+#include "col.h"
 #include "cand.h"
 #include "util.h"
 
 cand *newCandidateArray(int n)
 {
-    //Allocate memory
+    //Allocate memmory
     cand *ptr = (cand*)malloc(n * sizeof(cand));
 
-    //Check memory
+    //Check memmory
     if(ptr == NULL) {
-        perror("ERROR - Could not allocate memory for 'cand' struct.");
+        perror("ERROR - Could not allocate memmory for 'cand' struct.");
         exit(EXIT_FAILURE);
     }
 
     //Set default values
     for (int i=0; i<n; i++)
     {
-        ptr[i].index = i+1;
         ptr[i].num_applications = -1;
         ptr[i].score = -1;
         ptr[i].priority_list = NULL;
-        ptr[i].allocated_university = NULL;
+        ptr[i].allocated_college_index = -1;
     }
 
     return ptr;
 }
 
-cand *getCandidatesFromFile(const char *file_name, univ *universities) 
+cand *getCandidatesFromFile(const char *file_name, col *colleges) 
 {
     //Open file
     FILE *fp = fopen(file_name, "r");
@@ -56,24 +55,25 @@ cand *getCandidatesFromFile(const char *file_name, univ *universities)
         //Read 'num_applications' and 'score'
         fscanf(fp, "%d %d", &candidates[i].num_applications, &candidates[i].score);
 
-        //Allocate memory for the priority list
-        candidates[i].priority_list = (univ**)malloc(candidates[i].num_applications * sizeof(univ*));
+        //Allocate memmory for the candidate priority list
+        candidates[i].priority_list = (int*)malloc(candidates[i].num_applications * sizeof(int));
         if (candidates[i].priority_list == NULL) 
         {
-            perror("ERROR - Could not allocate memory for priority list\n"); 
+            perror("ERROR - Could not allocate memmory for priority list\n"); 
             exit(EXIT_FAILURE);
         }
             
-        //Index of a given university in the priority list
-        int univ_index;
+        //Index of a given college in the priority list
+        int col_index;
 
         //Read priority list
         for (int j=0; j<candidates[i].num_applications; j++)
         {
-            fscanf(fp, "%d", &univ_index); 
-            candidates[i].priority_list[j] = &universities[univ_index-1];
-            /*The '-1' compensates for the fact that the indices given in 
-             *the file start at 1.*/
+            fscanf(fp, "%d", &col_index); 
+            candidates[i].priority_list[j] = col_index-1;
+                                            /*We subtract 1 from the retrieved 
+                                             *value because the file ordering 
+                                             *starts from index 1 instead of 0*/  
         }
 
         //========================BEGIN-LOG-BLOCK==========================
@@ -81,10 +81,10 @@ cand *getCandidatesFromFile(const char *file_name, univ *universities)
                "        applications....%d\n"
                "        score...........%d\n"
                "        priority list...", 
-               candidates[i].index, candidates[i].num_applications, candidates[i].score);
+               i, candidates[i].num_applications, candidates[i].score);
         
         for (int j=0; j<candidates[i].num_applications; j++)
-            printf("%d ", candidates[i].priority_list[j]->index);
+            printf("%d ", candidates[i].priority_list[j]);
         
         printf("\n");
         //=========================END-LOG-BLOCK=========================== 
@@ -98,12 +98,10 @@ cand *getCandidatesFromFile(const char *file_name, univ *universities)
 
 void freeCandidateArray(cand *c, int n)
 {   
-    //Free each candidates priority list
+    //Free each candidate priority list
     for (int i=0; i<n; i++)
         free(c[i].priority_list);
     
     //Free candidate array
     free(c);
-
-    printf("Candidate array freed\n");
 }
