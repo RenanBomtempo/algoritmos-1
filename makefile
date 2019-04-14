@@ -1,13 +1,14 @@
 # FLAGS 
 CC = gcc
 CFLAGS = -I ./include -Wall
+VALG = -g 
 
 # MAKES
 all: main clean
 
 # MAIN FILE
-main: univ.o cand.o utilities.o
-	$(CC) ./src/main.c univ.o cand.o utilities.o -o ./bin/main $(CFLAGS)
+main: univ.o cand.o util.o
+	$(CC) ./src/main.c   univ.o cand.o util.o stblm.o   -o ./bin/main $(CFLAGS) $(VALG)
 
 # OBJECT FILES
 cand.o:
@@ -19,8 +20,11 @@ univ.o:
 sort.o:
 	$(CC) -c ./src/sort.c $(CFLAGS)
 
-utilities.o:
-	$(CC) -c ./src/utilities.c $(CFLAGS)
+util.o:
+	$(CC) -c ./src/util.c $(CFLAGS)
+
+stblm.o:
+	$(CC) -c ./src/stblm.c $(CFLAGS)
 
 # CLEAN OBJECT FILES
 clean:

@@ -1,16 +1,19 @@
 //==============================================================================
-//                        UTILITY FUNCTIONS [header]                   
+//                        STABLE MATCHING [implementation]                   
 //------------------------------------------------------------------------------
-// DESCRIPTION: This file contains all declarations of functions that might be
-//              useful in other components of the program.
+// DESCRIPTION: Implementation of functions used for executing the Gale-Shapley
+//              stable matching algorithm.
 //------------------------------------------------------------------------------
 // AUTHOR: Renan Antunes Braga Bomtempo                    MATRICULA: 2018048524
 //==============================================================================
 #include <stdio.h>
 #include <stdlib.h>
+#include "stblm.h"
+#include "univ.h"
+#include "cand.h"
+#include "util.h"
 
-/*
- * Chech if the desired file was opened correctly.
- */
-void checkFilePointer(FILE *fp, const char *file_name);
-
+void runGaleShapley(univ *universities, cand *candidates)
+{
+    
+}

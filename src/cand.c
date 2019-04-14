@@ -9,11 +9,9 @@
 //==============================================================================
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "univ.h"
 #include "cand.h"
-#include "utilities.h"
-
+#include "util.h"
 
 cand *newCandidateArray(int n)
 {
@@ -83,7 +81,7 @@ cand *getCandidatesFromFile(const char *file_name, univ *universities)
                "        applications....%d\n"
                "        score...........%d\n"
                "        priority list...", 
-               i, candidates[i].num_applications, candidates[i].score);
+               candidates[i].index, candidates[i].num_applications, candidates[i].score);
         
         for (int j=0; j<candidates[i].num_applications; j++)
             printf("%d ", candidates[i].priority_list[j]->index);

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "univ.h"
-#include "utilities.h"
+#include "util.h"
 
 univ *newUniversityArray(int n)
 {   

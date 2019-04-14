@@ -1,21 +1,19 @@
 //==============================================================================
 //                        UTILITY FUNCTIONS [header]                   
 //------------------------------------------------------------------------------
-// DESCRIPTION: This file contains the implementations of all functions that 
-//              might be useful in other components of the program.
+// DESCRIPTION: This file contains all declarations of functions that might be
+//              useful in other components of the program.
 //------------------------------------------------------------------------------
 // AUTHOR: Renan Antunes Braga Bomtempo                    MATRICULA: 2018048524
 //==============================================================================
+#ifndef UTIL_H
+#define UTIL_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "utilities.h"
 
-void checkFilePointer(FILE *fp, const char *file_name)
-{
-    if (fp == NULL) 
-    {
-        fprintf(stderr, "ERROR - Couldn't open the file: \"%s\"\n", file_name);
-        exit(EXIT_FAILURE);
-    }
-}
+/*
+ * Chech if the desired file was opened correctly.
+ */
+void checkFilePointer(FILE *fp, const char *file_name);
 
+#endif //UTIL_H
