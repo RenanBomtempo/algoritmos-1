@@ -8,23 +8,7 @@
 //==============================================================================
 #ifndef CAND_H
 #define CAND_H
-
-//Number of candidates in the read file
-int g_num_candidates; 
-
-/*
- * Struct containing all candidate data.
- */
-typedef struct Candidate {
-    //Number of applications made by the candidate.
-    int num_applications;
-    //Score of the candidate.
-    int score;
-    //Index of the college the candidate was allocated to.
-    int allocated_college_index;
-    //List of college indices to which the candidate will apply to.
-    int *priority_list;
-} cand;
+#include "util.h"
 
 /*
  * Create an array of 'candidate' entity.

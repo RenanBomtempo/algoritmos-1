@@ -9,7 +9,6 @@
 //==============================================================================
 #include <stdio.h>
 #include <stdlib.h>
-#include "col.h"
 #include "cand.h"
 #include "util.h"
 
@@ -27,6 +26,7 @@ cand *newCandidateArray(int n)
     //Set default values
     for (int i=0; i<n; i++)
     {
+        ptr[i].index = i;
         ptr[i].num_applications = -1;
         ptr[i].score = -1;
         ptr[i].priority_list = NULL;

@@ -11,6 +11,7 @@
 #include "col.h"
 #include "cand.h"
 #include "util.h"
+#include "stblm.h"
 
 int main(int argc, const char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, const char *argv[])
     cand *candidates = getCandidatesFromFile(argv[2], colleges);
 
     //Run Gale-Shapley algortihm
+    runGaleShapley(colleges, candidates);
 
     //Free all arrays
     freeCollegeArray(colleges);

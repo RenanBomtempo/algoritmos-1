@@ -15,12 +15,12 @@
 /*
  * Execute the Gale-Shapley algorithm for stable matching.
  */
-void runGaleShapley(col *colleges, int num_col, cand *candidates, int num_cand);
+void runGaleShapley(col *colleges, cand *candidates);
 
 /*
  *
  */
-int everyoneApplied(cand *candidates, int n);
+int everyoneApplied(cand *candidates);
 
 /*
  *

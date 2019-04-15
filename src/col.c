@@ -26,6 +26,7 @@ col *newCollegeArray(int n)
     //Set default values
     for (int i=0; i<n; i++)
     {
+        ptr[i].index = i;
         ptr[i].min_score = -1;
         ptr[i].quota = -1;
         ptr[i].selected_candidates = NULL;
@@ -80,3 +81,57 @@ void freeCollegeArray(col *u)
     //Free college array
     free(u);
 }
+
+void addToList(list **l, cand *c)
+{
+    printf("Recieved the list pointer %p\n", *l);
+    list *ptr = *l;
+    
+    //Allocate memory
+    list *new_item = (list*)malloc(sizeof(list));
+    if (new_item == NULL) 
+    {
+        perror("ERROR - Could not allocate memory for an item on the waiting list!");
+        exit(EXIT_FAILURE);
+    }
+
+    //Set item values
+    new_item->candidate = c;
+    new_item->next = NULL;
+    
+    //Replace next pointer to be to the new item created
+    if (ptr == NULL) 
+    {
+        *l = new_item;
+    } 
+    else 
+    {
+        while (ptr->next != NULL){
+            ptr = ptr->next;
+        }
+        printf("Next item is %p\n", ptr->next);
+        ptr->next = new_item;
+    }   
+
+}
+
+void freeList(list *l)
+{
+    list *temp = l;
+    if (l != NULL)
+    {
+        while(l->next != NULL)
+        {
+            temp = l;
+            l = l->next;
+            free(temp);
+        }
+        free(l);
+    }
+}
+
+void orderList(list *l)
+{
+    //Run sorting algorithm to order the list based on the score
+}
+
