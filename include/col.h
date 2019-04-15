@@ -28,12 +28,12 @@ void freeCollegeArray(col *u);
 /*
  * Add candidate to the waiting list.
  */
-void addToList(list **l, cand *c);
+void addToWaitingList(list **l, cand *c);
 
 /*
  * Free all memory allocated in a list.
  */
-void freeList(list *l);
+void freeWaitingList(list *l);
 
 /*
  * Remove candidate from the waiting list.
@@ -41,8 +41,32 @@ void freeList(list *l);
 void removeFromList(list *l, int key);
 
 /*
- * Order the waiting list 
+ * Print the waiting list.
  */
-void orderList(list *l);
+void printWaitingList(list *l, int col_index); 
+
+/*
+ * (Quicksort)
+ * Returns the last candidate of the waiting list.
+ */
+list *getLastCandidate(list *l); 
+
+/*
+ *(Quicksort)
+ * Creates a partition of the list with the last element as the pivot.
+ */
+list *partition(list *l, list *end, list **new_head, list **new_end);
+
+/*
+ *(Quicksort)
+ * Recursion function of quicksort.
+ */
+list *quickSortRecursion(list *l, list *end);
+
+/*
+ * Quicksort the waiting list.
+ */
+void orderWaitingList(list **l);
+
 
 #endif //UNIV_H

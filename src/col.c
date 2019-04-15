@@ -57,7 +57,7 @@ col *getCollegesFromFile(const char *file_name)
     }
 
     //========================BEGIN-LOG-BLOCK==========================
-    printf("All collected data from %d colleges:\n", g_num_colleges);
+    printf("All collected candidate->score from %d colleges:\n", g_num_colleges);
 
     for (int i = 0; i < g_num_colleges; i++)
     {
@@ -82,9 +82,8 @@ void freeCollegeArray(col *u)
     free(u);
 }
 
-void addToList(list **l, cand *c)
+void addToWaitingList(list **l, cand *c)
 {
-    printf("Recieved the list pointer %p\n", *l);
     list *ptr = *l;
     
     //Allocate memory
@@ -109,17 +108,16 @@ void addToList(list **l, cand *c)
         while (ptr->next != NULL){
             ptr = ptr->next;
         }
-        printf("Next item is %p\n", ptr->next);
         ptr->next = new_item;
     }   
 
 }
 
-void freeList(list *l)
+void freeWaitingList(list *l)
 {
-    list *temp = l;
     if (l != NULL)
     {
+        list *temp;
         while(l->next != NULL)
         {
             temp = l;
@@ -130,8 +128,109 @@ void freeList(list *l)
     }
 }
 
-void orderList(list *l)
-{
-    //Run sorting algorithm to order the list based on the score
-}
+void printWaitingList(list *item, int col_index) 
+{ 
+    printf("Waiting list for college %d:\n", col_index);
+    while (item != NULL) 
+    { 
+        printf("%d  ", item->candidate->score); 
+        item = item->next; 
+    } 
+    printf("\n"); 
+} 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * The following functions are designed to order the waiting list according to *
+ * each candidates score (from highest to lowest) using Quicksort.             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+void orderWaitingList(list **waiting_list) 
+{ 
+    (*waiting_list) = quickSortRecursion(*waiting_list, getLastCandidate(*waiting_list));
+} 
+
+list *quickSortRecursion(list *l, list *end) 
+{ 
+    // base condition 
+    if (l == NULL || l == end) 
+        return l; 
+  
+    list *new_head = NULL;
+    list *new_end = NULL; 
+  
+    // Partition the list
+    list *pivot = partition(l, end, &new_head, &new_end); 
+  
+    // If pivot doesn't have the greatest score
+    if (new_head != pivot) 
+    { 
+        // Set the item before the pivot item as NULL 
+        list *temp = new_head; 
+        while (temp->next != pivot) 
+            temp = temp->next; 
+        temp->next = NULL; 
+  
+        // Recur for the list before pivot 
+        new_head = quickSortRecursion(new_head, temp); 
+  
+        // Change next of last item of the left half to pivot 
+        temp = getLastCandidate(new_head); 
+        temp->next =  pivot; 
+    } 
+  
+    // Recur for the list after the pivot 
+    pivot->next = quickSortRecursion(pivot->next, new_end); 
+  
+    return new_head; 
+} 
+
+list *getLastCandidate(list *ptr) 
+{ 
+    while (ptr != NULL && ptr->next != NULL) 
+        ptr = ptr->next; 
+    return ptr; 
+} 
+  
+list *partition(list *l, list *end, list **new_head, list **new_end) 
+{ 
+    list *pivot = end; 
+    list *tail = pivot; 
+    //Previous candidate
+    list *prev = NULL;
+    //Current candidate
+    list *ptr = l;
+
+    while (ptr != pivot) 
+    { 
+        if (ptr->candidate->score > pivot->candidate->score) 
+        { 
+            //Candidate with higher score becomes the head of partition
+            if ((*new_head) == NULL) 
+                (*new_head) = ptr; 
+  
+            prev = ptr;   
+            ptr = ptr->next; 
+        } 
+        else //If ptr candidate has a lower score than pivot, move it to the end
+        {
+            list *temp = ptr->next; 
+            
+            if (prev != NULL) 
+                prev->next = ptr->next; 
+            
+            ptr->next = NULL;
+            tail->next = ptr; 
+            tail = ptr; 
+            ptr = temp; 
+        } 
+    } 
+  
+    // If the pivot candidate score is the higher in the current list it becomes the head
+    if ((*new_head) == NULL) 
+        (*new_head) = pivot; 
+  
+    // Update new_end to the current last candidate 
+    (*new_end) = tail; 
+  
+    return pivot; 
+} 

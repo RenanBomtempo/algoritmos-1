@@ -18,6 +18,7 @@ void runGaleShapley(col *colleges, cand *candidates)
     //List conaining all candidates that are not allocated
     int *unallocated_candidates = initializeUnallocatedCandidates(g_num_candidates);
     
+    //While there are still candidates that can apply to a college
     while(!everyoneApplied(candidates))
     {
         //For all candidates that are not yet allocated but can still be
@@ -51,19 +52,28 @@ void runGaleShapley(col *colleges, cand *candidates)
                         break;
                     }
                 }
-                
             } 
             else //If the candidate is already allocated go to the next one
             {
                 continue;
             }
-
+        }
+        //Order the waiting list before selecting the candidates
+        for (int i = 0; i < g_num_colleges; i++)
+        { 
+            printf("\nBefore ordering:\n");
+            printWaitingList(colleges[i].waiting_list, i);
+            
+            orderWaitingList(&colleges[i].waiting_list);
+            
+            printf("After ordering:\n");
+            printWaitingList(colleges[i].waiting_list, i);
         }
     }
 
     //Free mallocs
     for (int i = 0; i < g_num_colleges; i++)
-        freeList(colleges[i].waiting_list);
+        freeWaitingList(colleges[i].waiting_list);
     
     free(unallocated_candidates);
 }
@@ -72,7 +82,7 @@ void applyToCollege(cand *candidate, col *college)
 {
     if (candidate->score >= college->min_score)
     {
-        addToList(&college->waiting_list, candidate);
+        addToWaitingList(&college->waiting_list, candidate);
         printf("Candidate %d applied to college %d\n", candidate->index, college->index);
     }
 }
