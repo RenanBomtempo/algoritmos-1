@@ -1,4 +1,4 @@
-//==============================================================================
+ //==============================================================================
 //                        STABLE MATCHING [header]                   
 //------------------------------------------------------------------------------
 // DESCRIPTION: This file contains all declarations of funtions that will be 
@@ -25,12 +25,16 @@ int everyoneApplied(cand *candidates);
 /*
  *
  */
-int *initializeUnallocatedCandidates(int n);
+int *initializeCandidatesStatus(int n);
 
 /*
  *
  */
 void candidateIsNowAllocated(int *list, int candidate);
+/*
+ *
+ */
+void acceptCandidatesOnWaintingLists(col *college);
 
 /*
  *

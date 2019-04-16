@@ -12,15 +12,21 @@
 #include "col.h"
 #include "cand.h"
 #include "util.h"
+#define ALREADY_APPLIED_TO -1
+#define ALLOCATED 1
+#define NOT_ALLOCATED 0
+
+//List conaining all candidates that are not allocated
+int *g_candidates_status;
 
 void runGaleShapley(col *colleges, cand *candidates)
 {   
-    //List conaining all candidates that are not allocated
-    int *unallocated_candidates = initializeUnallocatedCandidates(g_num_candidates);
+    g_candidates_status = initializeCandidatesStatus(g_num_candidates);
     
     //While there are still candidates that can apply to a college
     while(!everyoneApplied(candidates))
     {
+        printf("\n=====NEW PHASE HAS BEGUN=====\n");
         //For all candidates that are not yet allocated but can still be
         for (int i = 0; i < g_num_candidates; i++)
         {   
@@ -30,7 +36,8 @@ void runGaleShapley(col *colleges, cand *candidates)
             //Index of the college to which the candidate will apply to
             int col_ind;
             
-            if (unallocated_candidates[i] == 1) 
+            //Check if the caniddate i is already allocated
+            if (g_candidates_status[i] == NOT_ALLOCATED) 
             {   
                 //If the given candidate is not yet allocated, select it
                 applying_cand = &candidates[i];
@@ -40,42 +47,93 @@ void runGaleShapley(col *colleges, cand *candidates)
                 {
                     col_ind = applying_cand->priority_list[j];
                     
+                    //If he has not yet been rejected by that college, apply to it
                     if (col_ind >= 0) 
                     {
-                        //If he has not yet been rejected by that college, apply to it
                         applyToCollege(applying_cand, &colleges[col_ind]);
 
-                        //Set this college status to 'already applied to' (assign -1)
-                        applying_cand->priority_list[j] = -1;
+                        /*By subtracting the total number of colleges
+                         *we don't lose the information of what college it is 
+                         *and also provide control over which colleges the 
+                         *candidate has already applied to.*/
+                        applying_cand->priority_list[j] -= g_num_colleges;
                         
                         //and go to next candidate
                         break;
                     }
                 }
-            } 
-            else //If the candidate is already allocated go to the next one
-            {
-                continue;
             }
         }
+        
+        //Select all candidates within the college quota  
+        acceptCandidatesOnWaintingLists(colleges);
+
         //Order the waiting list before selecting the candidates
         for (int i = 0; i < g_num_colleges; i++)
         { 
-            printf("\nBefore ordering:\n");
-            printWaitingList(colleges[i].waiting_list, i);
-            
-            orderWaitingList(&colleges[i].waiting_list);
-            
-            printf("After ordering:\n");
+            //freeWaitingList(colleges[i].waiting_list);
             printWaitingList(colleges[i].waiting_list, i);
         }
     }
 
-    //Free mallocs
-    for (int i = 0; i < g_num_colleges; i++)
-        freeWaitingList(colleges[i].waiting_list);
+    printf("Grupos com alocacao\n");
+    for (int i = 0; i < g_num_candidates; i++)
+    {
+        if (g_candidates_status[i] == ALLOCATED)
+            printf("%d %d\n", candidates[i].index+1, candidates[i].allocated_college_index+1);
+    }
+
+    printf("Candidatos nao alocados\n");
+    for (int i = 0; i < g_num_candidates; i++)
+    {
+        if (g_candidates_status[i] == NOT_ALLOCATED)
+            printf("%d\n", candidates[i].index+1);
+    }
     
-    free(unallocated_candidates);
+    for (int i = 0; i < g_num_colleges; i++)
+    { 
+        freeWaitingList(&colleges[i].waiting_list);
+    }
+    //Free mallocs
+    free(g_candidates_status);
+}
+
+void acceptCandidatesOnWaintingLists(col *colleges)
+{
+    for (int i = 0; i < g_num_colleges; i++)
+    {
+        printf("Accepting candidates from college %d with quota %d\n", colleges[i].index, colleges[i].quota);
+        if (colleges[i].quota == 0) continue;
+
+        orderWaitingList(&colleges[i].waiting_list);
+       
+        //Start with the candidate at the top of the list
+        list *cur = colleges[i].waiting_list;
+
+        int index;
+        while (cur != NULL && colleges[i].quota > 0) 
+        {
+            //Index of the 'selected_candidates' array where 
+            index = colleges[i].quota-1;
+
+            //Insert the index of the selected candidate in the colleges array
+            colleges[i].selected_candidates[index] = cur->candidate->index;
+
+            //Insert index of college in candidate
+            cur->candidate->allocated_college_index = colleges[i].index;
+
+            //Change candidate status to allocated
+            g_candidates_status[cur->candidate->index] = ALLOCATED;
+            
+            //Update college quota
+            colleges[i].quota -= 1;
+            
+            //Select the next candidate in the list
+            cur = cur->next;
+        } 
+
+        freeWaitingList(&colleges[i].waiting_list);
+    }
 }
 
 void applyToCollege(cand *candidate, col *college)
@@ -92,16 +150,20 @@ int everyoneApplied(cand *candidates)
     //For each candidate check if there is still a college on its list
     for (int i = 0; i < g_num_candidates; i++)
     {
-        for (int j = 0; j < candidates[i].num_applications; j++)
+        //Only check the priority list if the candidate has not yet been allocated
+        if (g_candidates_status[i] == NOT_ALLOCATED)
         {
-            if (candidates[i].priority_list[j] >= 0) return 0;
-        } 
+            for (int j = 0; j < candidates[i].num_applications; j++)
+            {
+                if (candidates[i].priority_list[j] >= 0) return 0;
+            } 
+        }
     }
 
     return 1;
 }
 
-int *initializeUnallocatedCandidates(int n)
+int *initializeCandidatesStatus(int n)
 {
     //Allocate memmory 
     int *ptr = (int*)malloc(n * sizeof(int));
@@ -112,7 +174,7 @@ int *initializeUnallocatedCandidates(int n)
     }
 
     //Initially all candidates are unallocated
-    for (int i = 0; i < n; i++) ptr[i] = 1;
+    for (int i = 0; i < n; i++) ptr[i] = 0;
     
     return ptr;
 }

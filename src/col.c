@@ -54,6 +54,16 @@ col *getCollegesFromFile(const char *file_name)
         //Read 'quota' and 'min_score'
         fscanf(fp, "%d %d", &colleges[i].quota, 
                             &colleges[i].min_score);
+
+        //Allocate memory for the list of selected candidates
+        colleges[i].selected_candidates = (int*)malloc(colleges[i].quota * sizeof(int));
+
+        //Initialize their values with -1 to represent the absence of a candidate
+        for (int j = 0; j < colleges[i].quota; j++)
+        {
+            colleges[i].selected_candidates[j] = -1;
+        }
+        
     }
 
     //========================BEGIN-LOG-BLOCK==========================
@@ -76,11 +86,22 @@ col *getCollegesFromFile(const char *file_name)
     return colleges;
 }
 
-void freeCollegeArray(col *u)
+void freeCollegeArray(col *c, int n)
 {
+    for (int i = 0; i < n; i++)
+    {
+        //Free array of selected candidates
+        free(c[i].selected_candidates);
+    }
+    
     //Free college array
-    free(u);
+    free(c);
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * The following functions are designed to manipulate the waiting list of each *
+ * college.                                                                    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 void addToWaitingList(list **l, cand *c)
 {
@@ -110,30 +131,31 @@ void addToWaitingList(list **l, cand *c)
         }
         ptr->next = new_item;
     }   
-
 }
 
-void freeWaitingList(list *l)
+void freeWaitingList(list **l)
 {
-    if (l != NULL)
+    if (*l != NULL)
     {
-        list *temp;
-        while(l->next != NULL)
+        list *cur;
+        while((*l)->next != NULL)
         {
-            temp = l;
-            l = l->next;
-            free(temp);
+            cur = *l;
+            *l = (*l)->next;
+            free(cur);
         }
-        free(l);
+        free(*l);
     }
+
+    *l = NULL;
 }
 
 void printWaitingList(list *item, int col_index) 
 { 
-    printf("Waiting list for college %d:\n", col_index);
+    printf("\nWaiting list for college %d:\n", col_index);
     while (item != NULL) 
     { 
-        printf("%d  ", item->candidate->score); 
+        printf("[%d]-%d  ",item->candidate->index, item->candidate->score); 
         item = item->next; 
     } 
     printf("\n"); 
@@ -202,7 +224,7 @@ list *partition(list *l, list *end, list **new_head, list **new_end)
 
     while (ptr != pivot) 
     { 
-        if (ptr->candidate->score > pivot->candidate->score) 
+        if (ptr->candidate->score >= pivot->candidate->score) 
         { 
             //Candidate with higher score becomes the head of partition
             if ((*new_head) == NULL) 
