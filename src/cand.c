@@ -44,7 +44,7 @@ cand *getCandidatesFromFile(const char *file_name, col *colleges)
 
     //Number of candidates in the file
     fscanf(fp, "%d", &g_num_candidates);
-    printf("All collected data from %d candidates:\n", g_num_candidates);
+    //LOGprintf("All collected data from %d candidates:\n", g_num_candidates);
 
     //Array of candidates
     cand *candidates = newCandidateArray(g_num_candidates);
@@ -76,7 +76,7 @@ cand *getCandidatesFromFile(const char *file_name, col *colleges)
                                              *starts from index 1 instead of 0*/  
         }
 
-        //========================BEGIN-LOG-BLOCK==========================
+        /*//========================BEGIN-LOG-BLOCK==========================
         printf("    Candidate [%d]:\n"      
                "        applications....%d\n"
                "        score...........%d\n"
@@ -87,7 +87,7 @@ cand *getCandidatesFromFile(const char *file_name, col *colleges)
             printf("%d ", candidates[i].priority_list[j]);
         
         printf("\n");
-        //=========================END-LOG-BLOCK=========================== 
+        //=========================END-LOG-BLOCK=========================== */
     }
 
     //Close file

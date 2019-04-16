@@ -50,8 +50,6 @@ typedef struct college {
     int quota;
     //Minimum score needed to apply for this college.
     int min_score;
-    //Ordered list of the candidates that got into the college.
-    int *selected_candidates;
     //Waiting list for the candidates that applied to this college.
     list *waiting_list;
 } col;

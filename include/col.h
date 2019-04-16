@@ -23,7 +23,7 @@ col *getCollegesFromFile(const char *file_name);
 /*
  * Free all memmory allocated for the college array
  */
-void freeCollegeArray(col *c, int n);
+void freeCollegeArray(col *c);
 
 /*
  * Add candidate to the waiting list.
@@ -33,12 +33,7 @@ void addToWaitingList(list **l, cand *c);
 /*
  * Free all memory allocated in a list.
  */
-void freeWaitingList(list **l);
-
-/*
- * Print the waiting list.
- */
-void printWaitingList(list *l, int col_index); 
+void resetWaitingList(list **l);
 
 /*
  * (Quicksort)

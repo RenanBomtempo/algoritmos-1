@@ -26,7 +26,7 @@ void runGaleShapley(col *colleges, cand *candidates)
     //While there are still candidates that can apply to a college
     while(!everyoneApplied(candidates))
     {
-        printf("\n=====NEW PHASE HAS BEGUN=====\n");
+        //LOGprintf("\n=====NEW PHASE HAS BEGUN=====\n");
         //For all candidates that are not yet allocated but can still be
         for (int i = 0; i < g_num_candidates; i++)
         {   
@@ -67,15 +67,9 @@ void runGaleShapley(col *colleges, cand *candidates)
         
         //Select all candidates within the college quota  
         acceptCandidatesOnWaintingLists(colleges);
-
-        //Order the waiting list before selecting the candidates
-        for (int i = 0; i < g_num_colleges; i++)
-        { 
-            //freeWaitingList(colleges[i].waiting_list);
-            printWaitingList(colleges[i].waiting_list, i);
-        }
     }
 
+    //PROGRAM OUTPUT
     printf("Grupos com alocacao\n");
     for (int i = 0; i < g_num_candidates; i++)
     {
@@ -89,11 +83,7 @@ void runGaleShapley(col *colleges, cand *candidates)
         if (g_candidates_status[i] == NOT_ALLOCATED)
             printf("%d\n", candidates[i].index+1);
     }
-    
-    for (int i = 0; i < g_num_colleges; i++)
-    { 
-        freeWaitingList(&colleges[i].waiting_list);
-    }
+
     //Free mallocs
     free(g_candidates_status);
 }
@@ -102,7 +92,7 @@ void acceptCandidatesOnWaintingLists(col *colleges)
 {
     for (int i = 0; i < g_num_colleges; i++)
     {
-        printf("Accepting candidates from college %d with quota %d\n", colleges[i].index, colleges[i].quota);
+        //LOGprintf("Accepting candidates from college %d with quota %d\n", colleges[i].index, colleges[i].quota);
         if (colleges[i].quota == 0) continue;
 
         orderWaitingList(&colleges[i].waiting_list);
@@ -110,15 +100,8 @@ void acceptCandidatesOnWaintingLists(col *colleges)
         //Start with the candidate at the top of the list
         list *cur = colleges[i].waiting_list;
 
-        int index;
         while (cur != NULL && colleges[i].quota > 0) 
         {
-            //Index of the 'selected_candidates' array where 
-            index = colleges[i].quota-1;
-
-            //Insert the index of the selected candidate in the colleges array
-            colleges[i].selected_candidates[index] = cur->candidate->index;
-
             //Insert index of college in candidate
             cur->candidate->allocated_college_index = colleges[i].index;
 
@@ -132,7 +115,7 @@ void acceptCandidatesOnWaintingLists(col *colleges)
             cur = cur->next;
         } 
 
-        freeWaitingList(&colleges[i].waiting_list);
+        resetWaitingList(&colleges[i].waiting_list);
     }
 }
 
@@ -141,7 +124,7 @@ void applyToCollege(cand *candidate, col *college)
     if (candidate->score >= college->min_score)
     {
         addToWaitingList(&college->waiting_list, candidate);
-        printf("Candidate %d applied to college %d\n", candidate->index, college->index);
+        //LOGprintf("Candidate %d applied to college %d\n", candidate->index, college->index);
     }
 }
 

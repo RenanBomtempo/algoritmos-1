@@ -29,7 +29,6 @@ col *newCollegeArray(int n)
         ptr[i].index = i;
         ptr[i].min_score = -1;
         ptr[i].quota = -1;
-        ptr[i].selected_candidates = NULL;
         ptr[i].waiting_list = NULL;
     }
 
@@ -54,20 +53,10 @@ col *getCollegesFromFile(const char *file_name)
         //Read 'quota' and 'min_score'
         fscanf(fp, "%d %d", &colleges[i].quota, 
                             &colleges[i].min_score);
-
-        //Allocate memory for the list of selected candidates
-        colleges[i].selected_candidates = (int*)malloc(colleges[i].quota * sizeof(int));
-
-        //Initialize their values with -1 to represent the absence of a candidate
-        for (int j = 0; j < colleges[i].quota; j++)
-        {
-            colleges[i].selected_candidates[j] = -1;
-        }
-        
     }
 
-    //========================BEGIN-LOG-BLOCK==========================
-    printf("All collected candidate->score from %d colleges:\n", g_num_colleges);
+    /*//========================BEGIN-LOG-BLOCK==========================
+    printf("All collected data from %d colleges:\n", g_num_colleges);
 
     for (int i = 0; i < g_num_colleges; i++)
     {
@@ -78,7 +67,7 @@ col *getCollegesFromFile(const char *file_name)
                colleges[i].quota, 
                colleges[i].min_score);
     }
-    //=========================END-LOG-BLOCK===========================
+    //=========================END-LOG-BLOCK===========================*/
 
     //Close file
     fclose(fp);
@@ -86,14 +75,8 @@ col *getCollegesFromFile(const char *file_name)
     return colleges;
 }
 
-void freeCollegeArray(col *c, int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        //Free array of selected candidates
-        free(c[i].selected_candidates);
-    }
-    
+void freeCollegeArray(col *c)
+{    
     //Free college array
     free(c);
 }
@@ -133,7 +116,7 @@ void addToWaitingList(list **l, cand *c)
     }   
 }
 
-void freeWaitingList(list **l)
+void resetWaitingList(list **l)
 {
     if (*l != NULL)
     {
@@ -149,17 +132,6 @@ void freeWaitingList(list **l)
 
     *l = NULL;
 }
-
-void printWaitingList(list *item, int col_index) 
-{ 
-    printf("\nWaiting list for college %d:\n", col_index);
-    while (item != NULL) 
-    { 
-        printf("[%d]-%d  ",item->candidate->index, item->candidate->score); 
-        item = item->next; 
-    } 
-    printf("\n"); 
-} 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * The following functions are designed to order the waiting list according to *

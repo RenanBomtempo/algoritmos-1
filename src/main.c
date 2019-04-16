@@ -33,7 +33,7 @@ int main(int argc, const char *argv[])
     runGaleShapley(colleges, candidates);
 
     //Free all arrays
-    freeCollegeArray(colleges, g_num_colleges);
+    freeCollegeArray(colleges);
     freeCandidateArray(candidates, g_num_candidates);
 
     return 0;
